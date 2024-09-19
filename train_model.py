@@ -84,29 +84,12 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=3, min_lr
 steps_per_epoch = train_generator.samples // train_generator.batch_size
 validation_steps = validation_generator.samples // validation_generator.batch_size
 
-# train_generator に repeat() を追加
-train_dataset = tf.data.Dataset.from_generator(
-    lambda: train_generator,
-    output_signature=(
-        tf.TensorSpec(shape=(None, 224, 224, 3), dtype=tf.float32),
-        tf.TensorSpec(shape=(None, num_classes), dtype=tf.float32)
-    )
-).repeat()  # データセットを繰り返し供給する
-
-validation_dataset = tf.data.Dataset.from_generator(
-    lambda: validation_generator,
-    output_signature=(
-        tf.TensorSpec(shape=(None, 224, 224, 3), dtype=tf.float32),
-        tf.TensorSpec(shape=(None, num_classes), dtype=tf.float32)
-    )
-).repeat()  # バリデーションデータも繰り返す
-
 # モデルのトレーニング
 history = model.fit(
-    train_dataset,
+    train_generator,  # 修正: tf.data.Dataset.from_generator を削除
     steps_per_epoch=steps_per_epoch,
-    epochs=20,
-    validation_data=validation_dataset,
+    epochs=10,
+    validation_data=validation_generator,  # 修正: tf.data.Dataset.from_generator を削除
     validation_steps=validation_steps,
     callbacks=[early_stopping, reduce_lr]
 )
