@@ -6,29 +6,96 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         h1 {
             color: #4CAF50;
+            text-align: center;
+        }
+        .result-card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            word-wrap: break-word; /* 長いテキストを折り返す */
+            white-space: pre-wrap; /* 空白や改行を保持 */
         }
         img {
-            max-width: 400px;
+            max-width: 100%;
             height: auto;
-            margin-top: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
         }
         .no-image {
             color: #FF6347;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .metadata {
+            word-wrap: break-word; /* 長いテキストを折り返す */
+            white-space: pre-wrap; /* 空白や改行を保持 */
+            text-align: left;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            overflow-wrap: break-word; /* 長い単語を折り返す */           
+            max-width: 100%; /* メタデータの最大幅を100%に制限 */
+            box-sizing: border-box; /* パディングやボーダーを含む幅を制限 */
+        }
+
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>予測されたクラス: {{ predicted_class }}</h1>
-    {% if similar_image %}
-        <p>最も類似した画像:</p>
-        <a href="{% url 'identify_plant' %}?image_id=image_1">画像1の結果</a>
-        <img src="{{ similar_image.image.url }}" alt="Similar Image">
-    {% else %}
-        <p class="no-image">類似した画像が見つかりませんでした。</p>
-    {% endif %}
+    <div class="container">
+        <h1>予測されたクラス: {{ predicted_class }}</h1>
+        <div class="result-card">
+            <p>予測結果: {{ name }}</p>
+            <p>説明: {{ description }}</p>
+            <div class="metadata">
+                <strong>メタデータ:</strong><br>
+                {{ metadata }}
+            </div>
+        </div>
+    </div>
 </body>
 </html>

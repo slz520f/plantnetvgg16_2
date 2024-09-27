@@ -11,24 +11,25 @@ import os
 # Djangoプロジェクトのベースディレクトリを取得
 base_dir = settings.BASE_DIR
 
+
 # データフォルダへのパスを設定
 data_dir = os.path.join(base_dir, 'data')
 
-# クラスインデックスのパスを設定
+# ファイルパスを設定
 class_indices_path = os.path.join(data_dir, 'class_indices.json')
 
 # クラスインデックスのロード
 with open(class_indices_path, 'r') as f:
     class_indices = json.load(f)
 
-# クラスインデックスを反転させる
+# クラスインデックスを反転させて、インデックスからクラスIDに変換できるようにする
 class_indices_reversed = {v: k for k, v in class_indices.items()}
+
 
 # モデルをロード
 model = tf.keras.models.load_model('data/MobileNetV2_model.keras')
 
 def preprocess_image(image):
-    """画像を前処理してモデル入力用に変換する。"""
     image = Image.open(image).resize((224, 224))
     image_array = np.array(image) / 255.0
     image_array = np.expand_dims(image_array, axis=0)
@@ -46,6 +47,9 @@ def identify_plant(request):
     with open(species_file_path, 'r') as f:
         species_data = json.load(f)
 
+    # デバッグ用: species_data の内容をログに出力
+    print("Species Data:", species_data)
+
     if request.method == 'POST':
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -58,47 +62,23 @@ def identify_plant(request):
             print(f"Predicted index: {predicted_index}")
 
             # インデックスからクラスIDに変換
-            predicted_class_id = class_indices_reversed.get(predicted_index, None)
-            if predicted_class_id is None:
-                print("Predicted class ID not found")
-                return JsonResponse({"name": "エラーが発生しました", "description": "Class ID not found", "metadata": "情報が見つかりません"})
-
+            predicted_class_id = class_indices_reversed.get(predicted_index, "Unknown Class")
             print(f"Predicted class ID: {predicted_class_id}")
 
             # クラスIDから植物情報を取得
             try:
-                # クラスIDからspecies_infoを取得
-                species_info = species_data.get(predicted_class_id, None)
-                print(f"Species Info: {species_info}")
-
-                if species_info is None:
-                    raise ValueError("Species info not found in species_data")
-
-                # メタデータから該当するspecies_idを持つデータを検索
-                plant_metadata = None
-                for entry_key, entry_value in metadata.items():
-                    if entry_value["species_id"] == predicted_class_id:
-                        plant_metadata = entry_value
-                        break
-
-                if plant_metadata is None:
-                    raise ValueError(f"Metadata not found for species_id: {predicted_class_id}")
-
-                print(f"Plant Metadata: {plant_metadata}")
-
-                predicted_class_name = species_info
-                    
+                species_info = species_data.get(predicted_class_id, '情報が見つかりません')
+                plant_metadata = metadata.get(predicted_class_id, '情報が見つかりません')
+                if isinstance(species_info, str):
+                    predicted_class_name = species_info
+                else:
+                    print(f"Species info is not a string: {species_info}")
+                    predicted_class_name = '情報が見つかりません'
             except Exception as e:
                 print(f"An error occurred: {e}")
                 predicted_class_name = 'エラーが発生しました'
-                plant_metadata = '情報が見つかりません'
 
-            # すべてのメタデータ情報をJSONレスポンスに含める
-            result = {
-                "name": predicted_class_name,
-                "description": f"This is a description of the predicted plant: {predicted_class_name}.",
-                "metadata": plant_metadata  # すべてのメタデータ情報を含める
-            }
+            result = {"name": predicted_class_name, "description": f"This is a description of the predicted plant: {predicted_class_name}. Metadata: {plant_metadata}"}
             print("Result JSON:", result)
             return JsonResponse(result)
 
