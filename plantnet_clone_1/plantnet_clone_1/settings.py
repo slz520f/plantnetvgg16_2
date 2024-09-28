@@ -77,8 +77,18 @@ WSGI_APPLICATION = 'plantnet_clone_1.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://localhost')
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'devk75p0qnlvef',
+        'USER': 'u503u4bmdiaqci',
+        'PASSWORD': 'p9f2c0550cdc7325c9f00f4224df0d64d06526d9241de898967071292396da888',
+        'HOST': 'c8m0261h0c7idk.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
+    }
 }
+
+# HerokuのDATABASE_URLを使用する場合
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Password validation
