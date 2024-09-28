@@ -1,11 +1,11 @@
 from django.db import models
-from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications import MobileNetV2
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 
-# モデルをグローバルに準備してキャッシュする
-model = VGG16(weights='imagenet', include_top=False)
+# MobileNetV2モデルをグローバルに準備してキャッシュする
+model = MobileNetV2(weights='imagenet', include_top=False)
 
 class PlantImage(models.Model):
     image = models.ImageField(upload_to='images/')
