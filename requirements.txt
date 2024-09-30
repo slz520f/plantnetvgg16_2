@@ -50,13 +50,12 @@ requests==2.32.3
 requests-oauthlib==2.0.0
 rich==13.8.1
 rsa==4.9
-scipy==1.14.1
+scipy==1.13.3
 six==1.16.0
 sqlparse==0.5.1
 sympy==1.13.3
 tensorboard==2.14.0
 tensorboard-data-server==0.7.2
-tensorflow-macos==2.14.0
 tensorflow==2.14.0
 tensorflow-estimator==2.14.0
 tensorflow-io-gcs-filesystem==0.37.1
