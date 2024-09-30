@@ -1,8 +1,6 @@
-from django.contrib import admin
 from django.urls import path
-from identify import views
+from .views import identify_plant  # identify_plantビューをインポート
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('identify/', views.identify_plant, name='identify_plant'),
+    path('identify/', identify_plant, name='identify_plant'),  # URLパターンの追加
 ]

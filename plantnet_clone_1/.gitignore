@@ -165,3 +165,11 @@ dmypy.json
 cython_debug/
 /data/
 
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+media/
+staticfiles/

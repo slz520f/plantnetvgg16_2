@@ -25,7 +25,7 @@ with open(class_indices_path, 'r') as f:
 class_indices_reversed = {v: k for k, v in class_indices.items()}
 
 # モデルをロード
-model = tf.keras.models.load_model('data/MobileNetV2_model.keras')
+model = tf.keras.models.load_model('data/mobilenetv2_model.tflite')
 
 def preprocess_image(image):
     """画像を前処理してモデル入力用に変換する。"""

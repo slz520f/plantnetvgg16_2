@@ -7,6 +7,7 @@ from PIL import Image
 import numpy as np
 import json
 import os
+import requests  # 追加: requestsモジュールをインポート
 
 # Djangoプロジェクトのベースディレクトリを取得
 base_dir = settings.BASE_DIR
@@ -24,9 +25,8 @@ with open(class_indices_path, 'r') as f:
 # クラスインデックスを反転させて、インデックスからクラスIDに変換できるようにする
 class_indices_reversed = {v: k for k, v in class_indices.items()}
 
-
 # モデルをロード
-model = tf.keras.models.load_model('data/plant_model.h5')
+model = tf.keras.models.load_model('data/MobileNetV2_model.keras')
 
 def preprocess_image(image):
     image = Image.open(image).resize((224, 224))
@@ -76,7 +76,27 @@ def identify_plant(request):
                 print(f"An error occurred: {e}")
                 predicted_class_name = 'エラーが発生しました'
 
-            result = {"name": predicted_class_name, "description": "This is a description of the predicted plant: " + predicted_class_name}
+            # 結果をAPI経由で取得する部分
+            api_url = 'http://57.180.20.167:5000/predict'  # EC2のパブリックIPを指定
+            input_data = {'input': predicted_class_id}  # 予測されたクラスIDをAPIに送信
+            try:
+                response = requests.post(api_url, json=input_data)
+                if response.status_code == 200:
+                    api_result = response.json()  # APIからの結果を取得
+                    print("API Result:", api_result)
+                    # APIから取得した結果を使って処理を続けることができます
+                    # 例えば、以下のようにして表示する内容を決めることができます
+                    result = {
+                        "name": api_result.get('name', predicted_class_name),
+                        "description": api_result.get('description', "この植物の説明は取得できませんでした。")
+                    }
+                else:
+                    print(f"API呼び出しに失敗しました。ステータスコード: {response.status_code}")
+                    result = {"name": predicted_class_name, "description": "API呼び出しに失敗しました。"}
+            except Exception as e:
+                print(f"API呼び出し中にエラーが発生しました: {e}")
+                result = {"name": predicted_class_name, "description": "API呼び出し中にエラーが発生しました。"}
+
             print("Result JSON:", result)
             return JsonResponse(result)
 
