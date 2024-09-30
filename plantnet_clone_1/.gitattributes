@@ -1,2 +1,0 @@
-data/MobileNetV2_model.keras filter=lfs diff=lfs merge=lfs -text
-data/plantnet300K_metadata.json filter=lfs diff=lfs merge=lfs -text

@@ -1,3 +1,0 @@
-resnet50 A 0.55 L14.6
-resNet152 A0.37 A3.7
-MobileNet A 0.61 A1.86
