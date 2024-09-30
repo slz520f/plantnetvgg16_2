@@ -6,6 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+<<<<<<< HEAD
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -82,10 +83,25 @@
                 padding: 8px 16px;
                 font-size: 14px;
             }
+=======
+            margin: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        img {
+            max-width: 400px;
+            height: auto;
+            margin-top: 20px;
+        }
+        .no-image {
+            color: #FF6347;
+>>>>>>> c747ad193cedbf2e526a8863f75191d56d9e590a
         }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
     <div class="container">
         <h1>予測されたクラス: {{ predicted_class }}</h1>
         <div class="result-card">
@@ -93,5 +109,15 @@
             
         </div>
     </div>
+=======
+    <h1>予測されたクラス: {{ predicted_class }}</h1>
+    {% if similar_image %}
+        <p>最も類似した画像:</p>
+        <a href="{% url 'identify_plant' %}?image_id=image_1">画像1の結果</a>
+        <img src="{{ similar_image.image.url }}" alt="Similar Image">
+    {% else %}
+        <p class="no-image">類似した画像が見つかりませんでした。</p>
+    {% endif %}
+>>>>>>> c747ad193cedbf2e526a8863f75191d56d9e590a
 </body>
 </html>

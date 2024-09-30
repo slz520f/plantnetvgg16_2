@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Identification Result</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        img {
+            max-width: 400px;
+            height: auto;
+            margin-top: 20px;
+        }
+        .no-image {
+            color: #FF6347;
+        }
+    </style>
+</head>
+<body>
+    <h1>予測されたクラス: {{ predicted_class }}</h1>
+    {% if similar_image %}
+        <p>最も類似した画像:</p>
+        <a href="{% url 'identify_plant' %}?image_id=image_1">画像1の結果</a>
+        <img src="{{ similar_image.image.url }}" alt="Similar Image">
+    {% else %}
+        <p class="no-image">類似した画像が見つかりませんでした。</p>
+    {% endif %}
+</body>
+</html>
