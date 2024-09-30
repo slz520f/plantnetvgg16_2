@@ -64,7 +64,7 @@ torch==2.4.1
 torchvision==0.19.1
 tqdm==4.66.5
 typeguard==2.13.3
-typing_extensions==4.12.2
+typing_extensions==3.6.6
 urllib3==2.2.3
 Werkzeug==3.0.4
 whitenoise==6.7.0
