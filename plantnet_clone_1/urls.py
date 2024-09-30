@@ -18,11 +18,9 @@ Including another URLconf
 
 # plantnet_clone/urls.py
 from django.contrib import admin
-from django.urls import path
-from identify import views
-
+from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.identify_plant, name='identify_plant'),
+    path('identify/', include('identify.urls')),  # 'identify'アプリのurls.pyをインクルード
 ]
