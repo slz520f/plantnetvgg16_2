@@ -1,12 +1,17 @@
 absl-py==2.1.0
 asgiref==3.8.1
 astunparse==1.6.3
+awscli==1.34.30
 blinker==1.8.2
+boto3==1.35.30
+botocore==1.35.30
 certifi==2024.8.30
 charset-normalizer==3.3.2
 click==8.1.7
+colorama==0.4.6
 dj-database-url==2.2.0
 Django==5.1.1
+docutils==0.16
 Flask==3.0.3
 Flask-Cors==5.0.0
 flatbuffers==24.3.25
@@ -18,6 +23,7 @@ h5py==3.12.1
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.4
+jmespath==1.0.1
 keras==3.5.0
 libclang==18.1.1
 Markdown==3.7
@@ -33,9 +39,14 @@ packaging==24.1
 pillow==10.4.0
 protobuf==4.25.5
 psycopg2==2.9.9
+pyasn1==0.6.1
 Pygments==2.18.0
+python-dateutil==2.9.0.post0
+PyYAML==6.0.2
 requests==2.32.3
 rich==13.8.1
+rsa==4.7.2
+s3transfer==0.10.2
 six==1.16.0
 sqlparse==0.5.1
 tensorboard==2.17.1
@@ -48,3 +59,4 @@ urllib3==2.2.3
 Werkzeug==3.0.4
 whitenoise==6.7.0
 wrapt==1.16.0
+python-decouple

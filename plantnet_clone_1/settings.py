@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-af%b_nztea368qjnk+k^r+uejf@rbi@m62b0z(ynh7m05q3rf='
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['plantnet-300k-clone.herokuapp.com']
 
 
@@ -80,7 +81,7 @@ WSGI_APPLICATION = 'plantnet_clone_1.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
-
+DATABASE_URL = config('DATABASE_URL')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
