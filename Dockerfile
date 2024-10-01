@@ -1,8 +1,8 @@
 # ビルドステージ
-FROM python:3.10-slim-buster AS builder
+FROM python:3.11-slim-buster AS builder
 
 # 環境変数の設定
-ENV SECRET_KEY='=&#j#n-%8#fkx09wk*bvd958!nq(uj*3*(x88se$3@1ie6d-sz'
+
 ENV DATABASE_URL='postgres://u1stg7p15lfd4d:p322414979cc693b07786d189e4a6c135e7e89f6f32491451f68ac4da56b5f3a7@cc0gj7hsrh0ht8.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d3sh29do69ja1d'
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -29,7 +29,7 @@ COPY . .
 # RUN python manage.py collectstatic --noinput
 
 # 実行ステージ
-FROM python:3.10-slim-buster
+FROM python:3.11-slim-buster
 
 # 環境変数の設定
 ENV PYTHONDONTWRITEBYTECODE=1
