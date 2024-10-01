@@ -7,7 +7,6 @@ from PIL import Image
 import numpy as np
 import json
 import os
-import requests
 
 # Djangoプロジェクトのベースディレクトリを取得
 base_dir = settings.BASE_DIR
@@ -51,18 +50,20 @@ def identify_plant(request):
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.cleaned_data['image']
-            # Flask APIに画像を送信して予測を取得する
-            api_url = 'http://52.192.88.39/predict'  # EC2のパブリックIP
-            files = {'image': image}
-            response = requests.post(api_url, files=files)
-            prediction = response.json()
+            image_array = preprocess_image(image)
+            predictions = model.predict(image_array)
 
-            predicted_class_id = prediction.get('predicted_class', None)
+            # 予測結果のログ
+            predicted_index = np.argmax(predictions)
+            print(f"Predicted index: {predicted_index}")
 
+            # インデックスからクラスIDに変換
+            predicted_class_id = class_indices_reversed.get(predicted_index, None)
             if predicted_class_id is None:
-                return JsonResponse({"name": "エラーが発生しました", "description": "予測結果が取得できませんでした", "metadata": "情報が見つかりません"})
+                print("Predicted class ID not found")
+                return JsonResponse({"name": "エラーが発生しました", "description": "Class ID not found", "metadata": "情報が見つかりません"})
 
-            print(f"Predicted class ID from API: {predicted_class_id}")
+            print(f"Predicted class ID: {predicted_class_id}")
 
             # クラスIDから植物情報を取得
             try:
@@ -74,7 +75,11 @@ def identify_plant(request):
                     raise ValueError("Species info not found in species_data")
 
                 # メタデータから該当するspecies_idを持つデータを検索
-                plant_metadata = next((entry_value for entry_value in metadata.values() if entry_value["species_id"] == predicted_class_id), None)
+                plant_metadata = None
+                for entry_key, entry_value in metadata.items():
+                    if entry_value["species_id"] == predicted_class_id:
+                        plant_metadata = entry_value
+                        break
 
                 if plant_metadata is None:
                     raise ValueError(f"Metadata not found for species_id: {predicted_class_id}")
@@ -82,7 +87,7 @@ def identify_plant(request):
                 print(f"Plant Metadata: {plant_metadata}")
 
                 predicted_class_name = species_info
-
+                    
             except Exception as e:
                 print(f"An error occurred: {e}")
                 predicted_class_name = 'エラーが発生しました'
@@ -94,7 +99,6 @@ def identify_plant(request):
                 "description": f"This is a description of the predicted plant: {predicted_class_name}.",
                 "metadata": plant_metadata  # すべてのメタデータ情報を含める
             }
-
             print("Result JSON:", result)
             return JsonResponse(result)
 

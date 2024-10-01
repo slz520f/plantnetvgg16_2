@@ -27,8 +27,7 @@ SECRET_KEY = 'django-insecure-af%b_nztea368qjnk+k^r+uejf@rbi@m62b0z(ynh7m05q3rf=
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
+ALLOWED_HOSTS = ['plantnet-300k-clone.herokuapp.com']
 
 
 # Application definition
@@ -79,7 +78,7 @@ WSGI_APPLICATION = 'plantnet_clone_1.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 

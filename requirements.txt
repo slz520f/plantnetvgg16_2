@@ -8,10 +8,12 @@ click==8.1.7
 dj-database-url==2.2.0
 Django==5.1.1
 Flask==3.0.3
+Flask-Cors==5.0.0
 flatbuffers==24.3.25
 gast==0.6.0
 google-pasta==0.2.0
 grpcio==1.66.2
+gunicorn==23.0.0
 h5py==3.12.1
 idna==3.10
 itsdangerous==2.2.0
@@ -30,6 +32,7 @@ optree==0.12.1
 packaging==24.1
 pillow==10.4.0
 protobuf==4.25.5
+psycopg2==2.9.9
 Pygments==2.18.0
 requests==2.32.3
 rich==13.8.1
