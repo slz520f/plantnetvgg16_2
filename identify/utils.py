@@ -1,12 +1,14 @@
 import numpy as np
-from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+
 from tensorflow.keras.utils import load_img, img_to_array
 from identify.models import PlantImage
 
 # ... 残りのコード ...
 
-# VGG16モデルをロード
-model = VGG16(weights='imagenet', include_top=False, pooling='avg')
+
+model = MobileNetV2(weights='imagenet', include_top=False, pooling='avg')
 def extract_features(image_path):
     img = load_img(image_path, target_size=(224, 224))
     x = img_to_array(img)

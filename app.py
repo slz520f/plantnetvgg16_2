@@ -1,12 +1,12 @@
-# app.py
-
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # CORSのインポート
 import tensorflow as tf
 from keras.models import load_model
 import numpy as np
 from PIL import Image
 
 app = Flask(__name__)
+CORS(app)  # すべてのオリジンを許可
 
 # 事前に学習済みモデルをロード
 MODEL_PATH = '/Users/mame/plantnetvgg16_2/plantnetvgg16_2/plantnet_clone_1/data/MobileNetV2_model.keras'

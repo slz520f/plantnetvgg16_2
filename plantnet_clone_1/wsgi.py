@@ -1,5 +1,5 @@
 """
-WSGI config for plantnet_clone_2_mac project.
+WSGI config for plantnet_clone_1project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'plantnet_clone_2_mac.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'plantnet_clone_1.settings')
 
 application = get_wsgi_application()
