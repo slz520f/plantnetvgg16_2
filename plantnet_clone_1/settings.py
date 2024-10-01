@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'plantnet_clone_2_mac.urls'
+ROOT_URLCONF = 'plantnet_clone_1.urls'
 
 TEMPLATES = [
     {
@@ -70,17 +70,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'plantnet_clone_2_mac.wsgi.application'
+WSGI_APPLICATION = 'plantnet_clone_1.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
 
 
