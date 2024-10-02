@@ -25,4 +25,6 @@ from identify import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.identify_plant, name='identify_plant'),
+
 ]
+

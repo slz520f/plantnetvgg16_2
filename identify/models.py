@@ -8,6 +8,7 @@ import numpy as np
 model = MobileNetV2(weights='imagenet', include_top=False)
 
 
+
 class PlantImage(models.Model):
     image = models.ImageField(upload_to='images/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -43,5 +44,7 @@ class PlantFeature(models.Model):
         # バイナリデータを numpy 配列に変換して返す
         features_array = np.frombuffer(self.features, dtype=np.float32)
 
+
         return features_array
+
 

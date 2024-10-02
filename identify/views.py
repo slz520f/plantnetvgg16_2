@@ -14,12 +14,15 @@ base_dir = settings.BASE_DIR
 # データフォルダへのパスを設定
 data_dir = os.path.join(base_dir, 'data')
 
+
 # クラスインデックスのパスを設定
+
 class_indices_path = os.path.join(data_dir, 'class_indices.json')
 
 # クラスインデックスのロード
 with open(class_indices_path, 'r') as f:
     class_indices = json.load(f)
+
 
 # クラスインデックスを反転させる
 class_indices_reversed = {v: k for k, v in class_indices.items()}
@@ -34,6 +37,7 @@ output_details = interpreter.get_output_details()
 
 def preprocess_image(image):
     """画像を前処理してモデル入力用に変換する。"""
+
     image = Image.open(image).resize((224, 224))
     image_array = np.array(image) / 255.0
     image_array = np.expand_dims(image_array, axis=0)
@@ -53,6 +57,11 @@ def identify_plant(request):
     with open(species_file_path, 'r') as f:
         species_data = json.load(f)
 
+
+    # デバッグ用: species_data の内容をログに出力
+    print("Species Data:", species_data)
+
+
     if request.method == 'POST':
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -71,15 +80,18 @@ def identify_plant(request):
             print(f"Predicted index: {predicted_index}")
 
             # インデックスからクラスIDに変換
+
             predicted_class_id = class_indices_reversed.get(predicted_index, None)
             if predicted_class_id is None:
                 print("Predicted class ID not found")
                 return JsonResponse({"name": "エラーが発生しました", "description": "Class ID not found", "metadata": "情報が見つかりません"})
 
+
             print(f"Predicted class ID: {predicted_class_id}")
 
             # クラスIDから植物情報を取得
             try:
+
                 # クラスIDからspecies_infoを取得
                 species_info = species_data.get(predicted_class_id, None)
                 print(f"Species Info: {species_info}")
@@ -112,6 +124,7 @@ def identify_plant(request):
                 "description": f"This is a description of the predicted plant: {predicted_class_name}.",
                 "metadata": plant_metadata  # すべてのメタデータ情報を含める
             }
+
             print("Result JSON:", result)
             return JsonResponse(result)
 
