@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['plantnet-300k-clone.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -128,5 +128,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 # settings.py
-MODEL_PATH = os.path.join(BASE_DIR, '/Users/mame/plantnetvgg16_2/data/MobileNetV2_model.keras'
+MODEL_PATH = os.path.join(BASE_DIR, '/Users/mame/plantnetvgg16_2/plantnetvgg16_2/plantnet_clone_1/data/mobilenetv2_model.tflite'
 )

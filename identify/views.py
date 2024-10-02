@@ -24,14 +24,21 @@ with open(class_indices_path, 'r') as f:
 # クラスインデックスを反転させる
 class_indices_reversed = {v: k for k, v in class_indices.items()}
 
-# モデルをロード
-model = tf.keras.models.load_model('data/MobileNetV2_model.keras')
+# TensorFlow Liteモデルのロード
+interpreter = tf.lite.Interpreter(model_path=os.path.join(data_dir, 'mobilenetv2_model.tflite'))
+interpreter.allocate_tensors()
+
+# 入力/出力のテンソル情報を取得
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 def preprocess_image(image):
     """画像を前処理してモデル入力用に変換する。"""
     image = Image.open(image).resize((224, 224))
     image_array = np.array(image) / 255.0
     image_array = np.expand_dims(image_array, axis=0)
+    # データ型をFLOAT32に変換
+    image_array = image_array.astype(np.float32)
     return image_array
 
 def identify_plant(request):
@@ -51,7 +58,13 @@ def identify_plant(request):
         if form.is_valid():
             image = form.cleaned_data['image']
             image_array = preprocess_image(image)
-            predictions = model.predict(image_array)
+
+            # モデルへの入力
+            interpreter.set_tensor(input_details[0]['index'], image_array)
+            interpreter.invoke()
+
+            # 出力の取得
+            predictions = interpreter.get_tensor(output_details[0]['index'])
 
             # 予測結果のログ
             predicted_index = np.argmax(predictions)
